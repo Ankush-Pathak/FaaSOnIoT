@@ -1,0 +1,4 @@
+message message {
+  required string topic = 1;
+  required string payload = 2;
+}
