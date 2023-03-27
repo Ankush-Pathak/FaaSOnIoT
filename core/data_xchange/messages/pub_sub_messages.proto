@@ -1,4 +1,5 @@
+syntax= "proto3";
 message message {
-  required string topic = 1;
-  required string payload = 2;
+  string topic = 1;
+  string payload = 2;
 }
