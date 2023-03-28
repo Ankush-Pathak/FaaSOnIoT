@@ -11,8 +11,11 @@
 #include "Publisher.h"
 
 class Publishers {
-    std::unordered_map<Publisher, std::string> publisher_to_topic;
+    PublisherSet publishers;
 
+public:
+    Publishers();
+    void addPublisher(std::shared_ptr<Publisher> &publisherPtr);
 };
 
 

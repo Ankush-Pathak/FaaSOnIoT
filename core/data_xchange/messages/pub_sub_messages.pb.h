@@ -45,35 +45,35 @@ struct TableStruct {
 };
 void AddDescriptors();
 }  // namespace protobuf_pub_5fsub_5fmessages_2eproto
-class message;
-class messageDefaultTypeInternal;
-extern messageDefaultTypeInternal _message_default_instance_;
+class Message;
+class MessageDefaultTypeInternal;
+extern MessageDefaultTypeInternal _Message_default_instance_;
 namespace google {
 namespace protobuf {
-template<> ::message* Arena::CreateMaybeMessage<::message>(Arena*);
+template<> ::Message* Arena::CreateMaybeMessage<::Message>(Arena*);
 }  // namespace protobuf
 }  // namespace google
 
 // ===================================================================
 
-class message : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:message) */ {
+class Message : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Message) */ {
  public:
-  message();
-  virtual ~message();
+  Message();
+  virtual ~Message();
 
-  message(const message& from);
+  Message(const Message& from);
 
-  inline message& operator=(const message& from) {
+  inline Message& operator=(const Message& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  message(message&& from) noexcept
-    : message() {
+  Message(Message&& from) noexcept
+    : Message() {
     *this = ::std::move(from);
   }
 
-  inline message& operator=(message&& from) noexcept {
+  inline Message& operator=(Message&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -83,34 +83,34 @@ class message : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   }
   #endif
   static const ::google::protobuf::Descriptor* descriptor();
-  static const message& default_instance();
+  static const Message& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const message* internal_default_instance() {
-    return reinterpret_cast<const message*>(
-               &_message_default_instance_);
+  static inline const Message* internal_default_instance() {
+    return reinterpret_cast<const Message*>(
+               &_Message_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     0;
 
-  void Swap(message* other);
-  friend void swap(message& a, message& b) {
+  void Swap(Message* other);
+  friend void swap(Message& a, Message& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline message* New() const final {
-    return CreateMaybeMessage<message>(NULL);
+  inline Message* New() const final {
+    return CreateMaybeMessage<Message>(NULL);
   }
 
-  message* New(::google::protobuf::Arena* arena) const final {
-    return CreateMaybeMessage<message>(arena);
+  Message* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<Message>(arena);
   }
   void CopyFrom(const ::google::protobuf::Message& from) final;
   void MergeFrom(const ::google::protobuf::Message& from) final;
-  void CopyFrom(const message& from);
-  void MergeFrom(const message& from);
+  void CopyFrom(const Message& from);
+  void MergeFrom(const Message& from);
   void Clear() final;
   bool IsInitialized() const final;
 
@@ -127,7 +127,7 @@ class message : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(message* other);
+  void InternalSwap(Message* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -171,7 +171,7 @@ class message : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::std::string* release_payload();
   void set_allocated_payload(::std::string* payload);
 
-  // @@protoc_insertion_point(class_scope:message)
+  // @@protoc_insertion_point(class_scope:Message)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -189,112 +189,112 @@ class message : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
-// message
+// Message
 
 // string topic = 1;
-inline void message::clear_topic() {
+inline void Message::clear_topic() {
   topic_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline const ::std::string& message::topic() const {
-  // @@protoc_insertion_point(field_get:message.topic)
+inline const ::std::string& Message::topic() const {
+  // @@protoc_insertion_point(field_get:Message.topic)
   return topic_.GetNoArena();
 }
-inline void message::set_topic(const ::std::string& value) {
+inline void Message::set_topic(const ::std::string& value) {
   
   topic_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:message.topic)
+  // @@protoc_insertion_point(field_set:Message.topic)
 }
 #if LANG_CXX11
-inline void message::set_topic(::std::string&& value) {
+inline void Message::set_topic(::std::string&& value) {
   
   topic_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:message.topic)
+  // @@protoc_insertion_point(field_set_rvalue:Message.topic)
 }
 #endif
-inline void message::set_topic(const char* value) {
+inline void Message::set_topic(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   
   topic_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:message.topic)
+  // @@protoc_insertion_point(field_set_char:Message.topic)
 }
-inline void message::set_topic(const char* value, size_t size) {
+inline void Message::set_topic(const char* value, size_t size) {
   
   topic_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:message.topic)
+  // @@protoc_insertion_point(field_set_pointer:Message.topic)
 }
-inline ::std::string* message::mutable_topic() {
+inline ::std::string* Message::mutable_topic() {
   
-  // @@protoc_insertion_point(field_mutable:message.topic)
+  // @@protoc_insertion_point(field_mutable:Message.topic)
   return topic_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::std::string* message::release_topic() {
-  // @@protoc_insertion_point(field_release:message.topic)
+inline ::std::string* Message::release_topic() {
+  // @@protoc_insertion_point(field_release:Message.topic)
   
   return topic_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void message::set_allocated_topic(::std::string* topic) {
+inline void Message::set_allocated_topic(::std::string* topic) {
   if (topic != NULL) {
     
   } else {
     
   }
   topic_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), topic);
-  // @@protoc_insertion_point(field_set_allocated:message.topic)
+  // @@protoc_insertion_point(field_set_allocated:Message.topic)
 }
 
 // string payload = 2;
-inline void message::clear_payload() {
+inline void Message::clear_payload() {
   payload_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline const ::std::string& message::payload() const {
-  // @@protoc_insertion_point(field_get:message.payload)
+inline const ::std::string& Message::payload() const {
+  // @@protoc_insertion_point(field_get:Message.payload)
   return payload_.GetNoArena();
 }
-inline void message::set_payload(const ::std::string& value) {
+inline void Message::set_payload(const ::std::string& value) {
   
   payload_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:message.payload)
+  // @@protoc_insertion_point(field_set:Message.payload)
 }
 #if LANG_CXX11
-inline void message::set_payload(::std::string&& value) {
+inline void Message::set_payload(::std::string&& value) {
   
   payload_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:message.payload)
+  // @@protoc_insertion_point(field_set_rvalue:Message.payload)
 }
 #endif
-inline void message::set_payload(const char* value) {
+inline void Message::set_payload(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   
   payload_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:message.payload)
+  // @@protoc_insertion_point(field_set_char:Message.payload)
 }
-inline void message::set_payload(const char* value, size_t size) {
+inline void Message::set_payload(const char* value, size_t size) {
   
   payload_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:message.payload)
+  // @@protoc_insertion_point(field_set_pointer:Message.payload)
 }
-inline ::std::string* message::mutable_payload() {
+inline ::std::string* Message::mutable_payload() {
   
-  // @@protoc_insertion_point(field_mutable:message.payload)
+  // @@protoc_insertion_point(field_mutable:Message.payload)
   return payload_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::std::string* message::release_payload() {
-  // @@protoc_insertion_point(field_release:message.payload)
+inline ::std::string* Message::release_payload() {
+  // @@protoc_insertion_point(field_release:Message.payload)
   
   return payload_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void message::set_allocated_payload(::std::string* payload) {
+inline void Message::set_allocated_payload(::std::string* payload) {
   if (payload != NULL) {
     
   } else {
     
   }
   payload_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), payload);
-  // @@protoc_insertion_point(field_set_allocated:message.payload)
+  // @@protoc_insertion_point(field_set_allocated:Message.payload)
 }
 
 #ifdef __GNUC__

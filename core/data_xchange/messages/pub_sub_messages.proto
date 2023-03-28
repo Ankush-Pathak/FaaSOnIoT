@@ -1,5 +1,5 @@
 syntax= "proto3";
-message message {
+message Message {
   string topic = 1;
   string payload = 2;
 }

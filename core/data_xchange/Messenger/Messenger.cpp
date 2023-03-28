@@ -56,3 +56,27 @@ std::string Messenger::recv() const {
     }
     return {messageBuffer.payload, retVal - sizeof(messageBuffer.type)};
 }
+
+bool Messenger::isMessagePending() {
+    int retVal;
+    struct msqid_ds buff;
+    retVal = msgctl(messageQueueId, IPC_STAT, &buff);
+    if(retVal == -1) {
+        spdlog::error("msgctl on {} failed: {}", messageQueueId, strerror(errno));
+        return false;
+    }
+
+    return buff.msg_qnum > 0;
+}
+
+Message Messenger::recvAndDeserializeMessage() {
+    std::string raw_message = recv();
+    Message message;
+    message.ParseFromString(raw_message);
+    return message;
+}
+
+void Messenger::serializeAndSendMessage(const Message &message) {
+    send(message.SerializeAsString());
+}
+

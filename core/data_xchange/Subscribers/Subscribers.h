@@ -7,10 +7,16 @@
 
 
 #include <vector>
+#include <memory>
 #include "UserApplication/UserApplication.h"
+#include "Subscriber.h"
 
 class Subscribers {
-    std::vector<UserApplication> subscribers;
+    SubscriberSet subscribers;
+
+public:
+    void addSubscriber(std::shared_ptr<Subscriber> &subscriberPtr);
+    void sendMessage(const Message &message);
 
 };
 
