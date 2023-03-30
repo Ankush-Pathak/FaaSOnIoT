@@ -44,3 +44,15 @@ void Request::tokenizeRequest(const std::string &raw_request, std::vector<std::s
         tokenizedRequest.push_back(t);
     }
 }
+
+const std::string &Request::getUid() const {
+    return uid;
+}
+
+const std::string &Request::getTopic() const {
+    return topic;
+}
+
+Request::REQ_TYPE Request::getReqType() const {
+    return reqType;
+}

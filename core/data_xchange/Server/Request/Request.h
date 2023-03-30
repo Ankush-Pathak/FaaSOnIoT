@@ -20,6 +20,12 @@ public:
 
     bool parseRawRequest(const std::string &raw_request);
 
+    const std::string &getUid() const;
+
+    const std::string &getTopic() const;
+
+    REQ_TYPE getReqType() const;
+
 private:
     std::string uid, topic;
     REQ_TYPE reqType;
