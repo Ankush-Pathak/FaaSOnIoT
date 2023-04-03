@@ -21,7 +21,7 @@ public:
     const UserApplicationPtr &getUserApplicationPtr() const;
 
     void addTopic(TopicPtr &topicPtr);
-    void checkAndRetrieveMessage();
+    void checkAndProcessMessage();
     void checkTopicMatchAndForward(const Message &message);
     friend bool operator==(std::shared_ptr<Publisher> publisherPtr1, std::shared_ptr<Publisher> publisherPtr2);
 
@@ -33,9 +33,7 @@ struct PublisherHash {
     }
 };
 
-bool operator==(std::shared_ptr<Publisher> publisherPtr1, std::shared_ptr<Publisher> publisherPtr2) {
-    return publisherPtr1->getUserApplicationPtr()->getId() == publisherPtr2->getUserApplicationPtr()->getId();
-}
+bool operator==(std::shared_ptr<Publisher> publisherPtr1, std::shared_ptr<Publisher> publisherPtr2);
 
 using PublisherPtr = std::shared_ptr<Publisher>;
 using PublisherSet = std::unordered_set<PublisherPtr, PublisherHash>;

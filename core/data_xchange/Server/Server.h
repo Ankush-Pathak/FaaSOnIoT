@@ -25,7 +25,8 @@ class Server {
     void createSocket();
     void bindAndListen();
 public:
-    Server(const std::string &hostname, int port);
+    Server(const std::string &hostname, int port, std::shared_ptr<std::queue<RequestPtr>> requestQueuePtr,
+           std::shared_ptr<std::mutex> requestQueueLockPtr);
     void start();
 
 };

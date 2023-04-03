@@ -34,9 +34,7 @@ struct TopicHash {
     }
 };
 
-bool operator==(std::shared_ptr<Topic> topicPtr1, std::shared_ptr<Topic> topicPtr2) {
-    return topicPtr1->getName() == topicPtr2->getName();
-}
+bool operator==(std::shared_ptr<Topic> topicPtr1, std::shared_ptr<Topic> topicPtr2);
 
 using TopicPtr = std::shared_ptr<Topic>;
 using TopicSet = std::unordered_set<TopicPtr, TopicHash>;

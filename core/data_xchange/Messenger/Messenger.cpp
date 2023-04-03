@@ -8,6 +8,11 @@
 #include <sys/msg.h>
 #include <spdlog/spdlog.h>
 
+
+const std::string Messenger::pathanme = "faas_on_iot";
+const int Messenger::DEFAULT_MSG_TYPE = 1;
+const int Messenger::MAX_MSG_LEN = 1024;
+
 Messenger::Messenger(std::string uid) {
    key_t key = ftok(pathanme.c_str(), std::hash<std::string>{}(uid));
    if(key == -1) {

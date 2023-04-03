@@ -29,9 +29,6 @@ public:
 
 };
 
-const std::string Messenger::pathanme = "faas_on_iot";
-const int Messenger::DEFAULT_MSG_TYPE = 1;
-const int Messenger::MAX_MSG_LEN = 1024;
 
 
 #endif //DATA_XCHANGE_MESSENGER_H

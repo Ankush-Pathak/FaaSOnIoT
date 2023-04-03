@@ -18,6 +18,9 @@ public:
     void addSubscriber(std::shared_ptr<Subscriber> &subscriberPtr);
     void sendMessage(const Message &message);
 
+    bool contains(SubscriberPtr subscriberPtr);
+
+    SubscriberPtr find(SubscriberPtr subscriberPtr);
 };
 
 

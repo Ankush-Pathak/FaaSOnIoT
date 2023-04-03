@@ -30,3 +30,6 @@ const UserApplicationPtr &Publisher::getUserApplicationPtr() const {
     return userApplicationPtr;
 }
 
+bool operator==(std::shared_ptr<Publisher> publisherPtr1, std::shared_ptr<Publisher> publisherPtr2) {
+    return publisherPtr1->getUserApplicationPtr()->getId() == publisherPtr2->getUserApplicationPtr()->getId();
+}

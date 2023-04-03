@@ -23,3 +23,7 @@ void Topic::forwardMessageToSubscribers(const Message &message) {
 const std::string &Topic::getName() const {
     return name;
 }
+
+bool operator==(std::shared_ptr<Topic> topicPtr1, std::shared_ptr<Topic> topicPtr2) {
+return topicPtr1->getName() == topicPtr2->getName();
+}

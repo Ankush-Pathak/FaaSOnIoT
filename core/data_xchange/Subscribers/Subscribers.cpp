@@ -14,3 +14,11 @@ void Subscribers::sendMessage(const Message &message) {
         subscriberPtr->sendMessage(message);
     }
 }
+
+bool Subscribers::contains(SubscriberPtr subscriberPtr) {
+    return subscribers.find(subscriberPtr) != subscribers.end();
+}
+
+SubscriberPtr Subscribers::find(SubscriberPtr subscriberPtr) {
+    return *subscribers.find(subscriberPtr);
+}

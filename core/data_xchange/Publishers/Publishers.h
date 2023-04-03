@@ -16,6 +16,9 @@ class Publishers {
 public:
     Publishers();
     void addPublisher(std::shared_ptr<Publisher> &publisherPtr);
+    bool contains(PublisherPtr);
+    PublisherPtr find(PublisherPtr publisherPtr);
+    void checkAndProcessMessages();
 };
 
 

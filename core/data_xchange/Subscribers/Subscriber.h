@@ -14,7 +14,7 @@ class Subscriber {
     UserApplicationPtr userApplicationPtr;
     Messenger messenger;
 public:
-    Subscriber(UserApplication *userApplicationPtr);
+    Subscriber(std::shared_ptr<UserApplication> userApplicationPtr);
 
     const UserApplicationPtr &getUserApplicationPtr() const;
 
@@ -30,9 +30,7 @@ struct SubscriberHash {
     }
 };
 
-bool operator==(std::shared_ptr<Subscriber> subscriberPtr1, std::shared_ptr<Subscriber> subscriberPtr2) {
-    return subscriberPtr1->getUserApplicationPtr()->getId() == subscriberPtr2->getUserApplicationPtr()->getId();
-}
+bool operator==(std::shared_ptr<Subscriber> subscriberPtr1, std::shared_ptr<Subscriber> subscriberPtr2);
 
 using SubscriberPtr = std::shared_ptr<Subscriber>;
 using SubscriberSet = std::unordered_set<SubscriberPtr, SubscriberHash>;

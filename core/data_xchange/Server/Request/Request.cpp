@@ -21,8 +21,9 @@ bool Request::parseRawRequest(const std::string &raw_request) {
         return false;
 
     // TODO: Validate UID and Topic
-    uid = tokenizedRequest[1];
-    topic = tokenizedRequest[2];
+    uid = std::string(tokenizedRequest[1]);
+    topic = std::string(tokenizedRequest[2]);
+    return true;
 
 }
 

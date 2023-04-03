@@ -2,13 +2,15 @@
 // Created by ankush on 3/28/23.
 //
 
-#include <bits/socket.h>
+#include <sys/socket.h>
 #include "Server.h"
 #include <spdlog/spdlog.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-Server::Server(const std::string &hostname, int port) : hostname(hostname), port(port) {
+Server::Server(const std::string &hostname, int port, std::shared_ptr<std::queue<RequestPtr>> requestQueuePtr,
+               std::shared_ptr<std::mutex> requestQueueLockPtr)
+        : hostname(hostname), port(port), requestQueuePtr(requestQueuePtr), requestQueueLockPtr(requestQueueLockPtr) {
     createSocket();
     bindAndListen();
 }
