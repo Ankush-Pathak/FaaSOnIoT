@@ -3,6 +3,7 @@
 //
 
 #include "Publisher.h"
+#include "spdlog/spdlog.h"
 
 Publisher::Publisher(UserApplicationPtr &userApplicationPtr) : userApplicationPtr(userApplicationPtr), messenger(userApplicationPtr->getId()) {
 }
@@ -15,6 +16,7 @@ void Publisher::checkAndProcessMessage() {
     if(!messenger.isMessagePending())
         return;
     Message message = messenger.recvAndDeserializeMessage();
+    spdlog::info("Message from {} available: Topic: {} Payload: {}", this->getUserApplicationPtr()->getId(), message.topic(), message.payload());
     checkTopicMatchAndForward(message);
 }
 

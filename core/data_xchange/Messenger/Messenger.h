@@ -11,16 +11,19 @@
 
 class Messenger {
     int messageQueueId;
-    const static std::string pathanme;
+    const static std::string pathname;
     const static int DEFAULT_MSG_TYPE;
     const static int MAX_MSG_LEN;
 
     struct MessageBuffer {
         long type;
         char payload[1024];
+        MessageBuffer() {
+            memset(payload, 0, sizeof(payload));
+        }
     };
     void send(const std::string& raw_message);
-    std::string recv() const;
+    void recv(std::string &raw_message) const;
 public:
     Messenger(std::string uid);
     bool isMessagePending();

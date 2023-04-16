@@ -6,7 +6,9 @@
 
 #include <utility>
 
-Topic::Topic(std::string name) : name(std::move(name)) {}
+Topic::Topic(std::string name) : name(std::move(name)) {
+    subscriberPtrs = std::make_shared<Subscribers>();
+}
 
 void Topic::addSubscriber(SubscriberPtr &subscriberPtr) {
     subscriberPtrs->addSubscriber(subscriberPtr);

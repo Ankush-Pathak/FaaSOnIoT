@@ -3,11 +3,13 @@
 //
 
 #include "Subscriber.h"
+#include "spdlog/spdlog.h"
 
 Subscriber::Subscriber(std::shared_ptr<UserApplication> userApplication): userApplicationPtr(userApplication), messenger(userApplication->getId()) {
 }
 
 void Subscriber::sendMessage(const Message &message) {
+    spdlog::info("Sending message to subscriber: {}", getUserApplicationPtr()->getId());
     messenger.serializeAndSendMessage(message);
 
 }

@@ -23,6 +23,7 @@ void sig_handler(int signal_num) {
 int main() {
     signal(SIGINT, sig_handler);
     signal(SIGTERM, sig_handler);
+    spdlog::set_level(spdlog::level::debug);
     std::shared_ptr<std::queue<RequestPtr>> requestQueuePtr = std::make_shared<std::queue<RequestPtr>>();
     std::shared_ptr<std::mutex> requestQueueLockPtr = std::make_shared<std::mutex>();
     TopicSet topicSet;
@@ -32,14 +33,19 @@ int main() {
 
     std::thread serverThread(startDataXchangeServer, requestQueuePtr, requestQueueLockPtr);
     while (1) {
+        sleep(2);
         RequestPtr requestPtr;
         {
             std::lock_guard<std::mutex> lockGuard(*requestQueueLockPtr);
-            requestPtr = requestQueuePtr->front();
-            requestQueuePtr->pop();
+            if(!requestQueuePtr->empty()) {
+                requestPtr = requestQueuePtr->front();
+                requestQueuePtr->pop();
+            }
         }
+        if(!requestPtr)
+            continue;
         TopicPtr topicPtr = std::make_shared<Topic>(requestPtr->getTopic());
-        if(topicSet.find(topicPtr) != topicSet.end())
+        if(topicSet.count(topicPtr) == 0)
             topicSet.insert(topicPtr);
         else
             topicPtr = *topicSet.find(topicPtr);

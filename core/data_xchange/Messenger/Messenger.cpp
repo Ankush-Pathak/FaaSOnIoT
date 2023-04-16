@@ -9,12 +9,12 @@
 #include <spdlog/spdlog.h>
 
 
-const std::string Messenger::pathanme = "faas_on_iot";
+const std::string Messenger::pathname = "faas_on_iot";
 const int Messenger::DEFAULT_MSG_TYPE = 1;
 const int Messenger::MAX_MSG_LEN = 1024;
 
 Messenger::Messenger(std::string uid) {
-   key_t key = ftok(pathanme.c_str(), std::hash<std::string>{}(uid));
+   key_t key = ftok(pathname.c_str(), std::hash<std::string>{}(uid));
    if(key == -1) {
        spdlog::error("Could not convert path and identifier to IPC key for uid: {} : {}", uid, strerror(errno));
    }
@@ -27,6 +27,7 @@ Messenger::Messenger(std::string uid) {
 }
 
 void Messenger::send(const std::string& raw_message) {
+    spdlog::info("Sending message queue: {}", messageQueueId);
     if(messageQueueId == -1) {
         spdlog::error("Message queue not initialized, message send failed");
         return;
@@ -40,26 +41,28 @@ void Messenger::send(const std::string& raw_message) {
     MessageBuffer messageBuffer;
     messageBuffer.type = DEFAULT_MSG_TYPE;
     strcpy(messageBuffer.payload, raw_message.c_str());
-    int retVal = msgsnd(messageQueueId, &messageBuffer, sizeof(messageBuffer), 0);
+    int retVal = msgsnd(messageQueueId, &messageBuffer, sizeof(messageBuffer.payload), 0);
 
     if(retVal == -1) {
         spdlog::error("Could not send message: {}", strerror(errno));
     }
 }
 
-std::string Messenger::recv() const {
+void Messenger::recv(std::string &raw_message) const {
     if(messageQueueId == -1) {
         spdlog::error("Message queue not initialized, message send failed");
-        return {};
+        return;
     }
 
     MessageBuffer messageBuffer;
-    size_t retVal = msgrcv(messageQueueId, &messageBuffer, sizeof(messageBuffer), DEFAULT_MSG_TYPE, 0);
+    size_t retVal = msgrcv(messageQueueId, (struct MessageBuffer *)&messageBuffer, sizeof(messageBuffer.payload), DEFAULT_MSG_TYPE, 0);
     if(retVal == -1) {
         spdlog::error("Could not receive message: {}", strerror(errno));
-        return {};
+        return;
     }
-    return {messageBuffer.payload, retVal - sizeof(messageBuffer.type)};
+    //return std::string(messageBuffer.payload, retVal - sizeof(messageBuffer.type));
+    raw_message.resize(retVal - sizeof(messageBuffer.type));
+    raw_message.assign(messageBuffer.payload);
 }
 
 bool Messenger::isMessagePending() {
@@ -70,18 +73,20 @@ bool Messenger::isMessagePending() {
         spdlog::error("msgctl on {} failed: {}", messageQueueId, strerror(errno));
         return false;
     }
-
     return buff.msg_qnum > 0;
 }
 
 Message Messenger::recvAndDeserializeMessage() {
-    std::string raw_message = recv();
+    std::string raw_message;
+    recv(raw_message);
     Message message;
     message.ParseFromString(raw_message);
     return message;
 }
 
 void Messenger::serializeAndSendMessage(const Message &message) {
+    spdlog::info("Serializing and sending message: Topic: {} Payload: {}", message.topic(), message.payload());
     send(message.SerializeAsString());
+    spdlog::info("Message should be sent");
 }
 

@@ -38,11 +38,10 @@ bool Request::determineReqType(const std::vector<std::string> &tokenizedRequest)
 }
 
 void Request::tokenizeRequest(const std::string &raw_request, std::vector<std::string> &tokenizedString) const {
-    std::vector<std::string> tokenizedRequest;
     char_separator<char> sep(":");
     tokenizer<char_separator<char>> tokens(raw_request, sep);
     for (const auto& t : tokens) {
-        tokenizedRequest.push_back(t);
+        tokenizedString.push_back(t);
     }
 }
 
