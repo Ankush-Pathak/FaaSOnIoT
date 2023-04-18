@@ -16,26 +16,8 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(Boost)
 find_package(Protobuf REQUIRED)
-# include_directories(pybind11/include/pybind11)
 
-# Create an extension module
-# find_package(PythonLibs 3 REQUIRED)
 add_subdirectory(Thirdparty/pybind11)
-# include_directories(Thirdparty/pybind11/include)
-# find_package(PythonLibs REQUIRED)
-# include_directories(${PYTHON_INCLUDE_DIRS})
-
-# FetchContent_Declare(
-#         pybind11
-#         GIT_REPOSITORY https://github.com/pybind/pybind11
-#         GIT_TAG        v2.2.3
-# )
-#
-# FetchContent_GetProperties(pybind11)
-# if(NOT pybind11_POPULATED)
-#     FetchContent_Populate(pybind11)
-#     add_subdirectory(${pybind11_SOURCE_DIR} ${pybind11_BINARY_DIR})
-# endif()
 include_directories(${Protobuf_INCLUDE_DIRS})
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS messages/pub_sub_messages.proto)
@@ -46,14 +28,5 @@ target_link_libraries(data_xchange ${Protobuf_LIBRARIES} Boost::tokenizer)
 add_executable(pub_sub_example ${PROTO_SRCS} ${PROTO_HDRS} Example/pub_sub_example.cpp Example/pub_sub_example.h)
 target_link_libraries(pub_sub_example ${Protobuf_LIBRARIES})
 
-# add_library(mylib MODULE PythonWrapper/PosixMessageQueueWrapper.h PythonWrapper/PosixMessageQueueWrapper.cpp PythonWrapper/PythonBindings.cpp ${PROTO_SRCS} ${PROTO_HDRS})
-# target_link_libraries(mylib PUBLIC pybind11::module ${Protobuf_LIBRARIES} -L/usr/lib/python3.8/config-3.8-x86_64-linux-gnu -L/usr/lib -lpython3.8 -lcrypt -lpthread -ldl  -lutil -lm -lm)
-# set_target_properties(mylib
-#        PROPERTIES
-#        PREFIX "${PYTHON_MODULE_PREFIX}"
-#        SUFFIX "${PYTHON_MODULE_EXTENSION}"
-#        )
-# find_package(pybind11 REQUIRED)
-pybind11_add_module(mylib PythonWrapper/PosixMessageQueueWrapper.h PythonWrapper/PosixMessageQueueWrapper.cpp PythonWrapper/PythonBindings.cpp ${PROTO_SRCS} ${PROTO_HDRS})
-# add_executable(mylib PythonWrapper/PosixMessageQueueWrapper.h PythonWrapper/PosixMessageQueueWrapper.cpp PythonWrapper/PythonBindings.cpp ${PYTHON_LIBRARIES})
-target_link_libraries(mylib PRIVATE ${Protobuf_LIBRARIES})
+pybind11_add_module(posix_message_queue_wrapper PythonWrapper/PosixMessageQueueWrapper.h PythonWrapper/PosixMessageQueueWrapper.cpp PythonWrapper/PythonBindings.cpp ${PROTO_SRCS} ${PROTO_HDRS})
+target_link_libraries(posix_message_queue_wrapper PRIVATE ${Protobuf_LIBRARIES})
