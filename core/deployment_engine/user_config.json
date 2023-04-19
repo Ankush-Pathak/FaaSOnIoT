@@ -1,0 +1,17 @@
+{
+  "Name": "Demo_app",
+  "Version": "1.0.0",
+  "Resources": {
+    "Subs_Topic": [],
+    "Pubs_Topic": []
+  },
+  "Runtime_Environment": "venv",
+  "Required_Platform": "Linux",
+  "Run_Containerized": "False",
+  "Run_Commands": {
+    "Mode": "1",
+    "Exec_Commands": ["pip install -r requirements.txt", "python demo_code.py"],
+    "Wait_For_Exit": "True"
+  },
+  "Dependencies": "/Users/shreyasvaidya/Desktop/ADS/FaaSOnIoT-master/core/deployment_engine/requirements.txt"
+}
