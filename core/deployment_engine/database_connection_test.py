@@ -12,7 +12,7 @@ db_url = 'postgresql://postgres:admin123@localhost:5432/fassiotdb'
 # Create a base class for declarative models
 Base = declarative_base()
 
-# Define the User and Product models
+# Define the process and schema and stats models
 
 
 class Schema(Base):
@@ -91,13 +91,13 @@ Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 session = Session()
 
-# Insert data into the users table
+# Insert data into the schema table
 schema1 = Schema(id='1', name='first_exp', version= '1.0.0', runtimeEnvironment='venv', requiredPlatform= 'python', run_containerized=False,
                     dependecies = 'numpy, panda', subsTopic='2', Pubs_Topic='1', mode = '1', execCommands = 'ls -a', waitForExit = 'True',
                     status= 'running', deInternalStatus= 'creating folders')
 session.add_all([schema1])
 
-# Insert data into the products table
+# Insert data into the process table
 process1 = Process(process_id='1', cmd = 'ls -a', status = 'running', statusInfo = 'process is running')
 session.add_all([process1])
 
