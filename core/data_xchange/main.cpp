@@ -9,6 +9,8 @@
 #include "Topic/Topic.h"
 #include "Publishers/Publishers.h"
 #include "Server/Server.h"
+#include "Permissions/PermissionMap.h"
+#include "Permissions/PermissionFileParser.h"
 
 void startDataXchangeServer(std::shared_ptr<std::queue<RequestPtr>> requestQueuePtr, std::shared_ptr<std::mutex> requestQueueLockPtr) {
     Server server("localhost", 8000, requestQueuePtr, requestQueueLockPtr);
@@ -26,6 +28,8 @@ int main() {
     spdlog::set_level(spdlog::level::debug);
     std::shared_ptr<std::queue<RequestPtr>> requestQueuePtr = std::make_shared<std::queue<RequestPtr>>();
     std::shared_ptr<std::mutex> requestQueueLockPtr = std::make_shared<std::mutex>();
+    std::shared_ptr<PermissionMap> permissionMapPtr = std::make_shared<PermissionMap>();
+    std::shared_ptr<PermissionFileParser> permissionFileParserPtr = std::make_shared<PermissionFileParser>("pub_sub_perm_list", permissionMapPtr);
     TopicSet topicSet;
     Publishers publishers;
     Subscribers subscribers;
@@ -33,6 +37,7 @@ int main() {
 
     std::thread serverThread(startDataXchangeServer, requestQueuePtr, requestQueueLockPtr);
     while (1) {
+        permissionFileParserPtr->run();
         sleep(2);
         RequestPtr requestPtr;
         {
@@ -53,6 +58,10 @@ int main() {
 
         switch(requestPtr->getReqType()) {
             case Request::PUB: {
+                if(!permissionMapPtr->isPublicationAllowed(topicPtr->getName(), userApplicationPtr->getId())){
+                    spdlog::warn("Application: {} not allowed to publish to {}", userApplicationPtr->getId(), topicPtr->getName());
+                    continue;
+                }
                 PublisherPtr publisherPtr = std::make_shared<Publisher>(userApplicationPtr);
                 if (publishers.contains(publisherPtr))
                     publisherPtr = publishers.find(publisherPtr);
@@ -62,6 +71,11 @@ int main() {
             }
                 break;
             case Request::SUB: {
+                if(!permissionMapPtr->isSubscriptionAllowed(topicPtr->getName(), userApplicationPtr->getId())) {
+                    spdlog::warn("Application: {} not allowed to subscribe to {}", userApplicationPtr->getId(),
+                                 topicPtr->getName());
+                    continue;
+                }
                 SubscriberPtr subscriberPtr = std::make_shared<Subscriber>(userApplicationPtr);
                 if(subscribers.contains(subscriberPtr))
                     subscriberPtr = subscribers.find(subscriberPtr);

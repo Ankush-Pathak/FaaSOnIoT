@@ -8,11 +8,11 @@
 
 namespace py = pybind11;
 
-PYBIND11_MODULE(mylib, m) {
+PYBIND11_MODULE(posix_message_queue_wrapper, m) {
       py::class_<PosixMessageQueueWrapper>(m, "PosixMessageQueueWrapper")
           .def(py::init<const std::string &, const std::string &, const std::string &>())
           .def("sendMessage", &PosixMessageQueueWrapper::sendMessage)
           .def("recvMessage", &PosixMessageQueueWrapper::recvMessage)
           .def("registerPublisher", &PosixMessageQueueWrapper::registerPublisher)
-          .def("registerSubscrber", &PosixMessageQueueWrapper::registerSubscriber);
+          .def("registerSubscriber", &PosixMessageQueueWrapper::registerSubscriber);
 }

@@ -23,7 +23,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS messages/pub_sub_messages.proto)
 
 add_executable(data_xchange
-        main.cpp ${PROTO_SRCS} ${PROTO_HDRS} UserApplication/UserApplication.cpp UserApplication/UserApplication.h Publishers/Publishers.cpp Publishers/Publishers.h Subscribers/Subscribers.cpp Subscribers/Subscribers.h Publishers/Publisher.cpp Publishers/Publisher.h Subscribers/Subscriber.cpp Subscribers/Subscriber.h Messenger/Messenger.cpp Messenger/Messenger.h Topic/Topic.cpp Topic/Topic.h Server/Server.cpp Server/Server.h Server/Request/Request.cpp Server/Request/Request.h)
+        main.cpp ${PROTO_SRCS} ${PROTO_HDRS} UserApplication/UserApplication.cpp UserApplication/UserApplication.h Publishers/Publishers.cpp Publishers/Publishers.h Subscribers/Subscribers.cpp Subscribers/Subscribers.h Publishers/Publisher.cpp Publishers/Publisher.h Subscribers/Subscriber.cpp Subscribers/Subscriber.h Messenger/Messenger.cpp Messenger/Messenger.h Topic/Topic.cpp Topic/Topic.h Server/Server.cpp Server/Server.h Server/Request/Request.cpp Server/Request/Request.h Permissions/PermissionMap.cpp Permissions/PermissionMap.h Permissions/PermissionFileParser.cpp Permissions/PermissionFileParser.h)
 target_link_libraries(data_xchange ${Protobuf_LIBRARIES} Boost::tokenizer)
 add_executable(pub_sub_example ${PROTO_SRCS} ${PROTO_HDRS} Example/pub_sub_example.cpp Example/pub_sub_example.h)
 target_link_libraries(pub_sub_example ${Protobuf_LIBRARIES})
