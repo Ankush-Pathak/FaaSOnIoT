@@ -5,50 +5,61 @@ import json
 import shutil
 from collections import namedtuple
 
+from permission_manager import permission_manager
+
+
 class deployer:
-    # def __init__(self, config_path, artifcat_path) -> None:
-    #     config_dict = json.load(config_path)
-    #     #config_dict = pickle.load(f)
-    #     for key in config_dict.keys():
-    #         self.key = config_dict[key]
-    #     self.artifactPath = artifcat_path
+    
+    def createRunTimeEnv(self, env_name, final_dir):
 
-        
-
-    def createRunTimeEnv(self, envName, final_dir):
         print('Executing createRunTimeEnv()')
         os.chdir(final_dir)
-        if envName == 'venv':
+        if env_name == 'venv':
             cmd = "sudo apt-get install python3.8"
             os.system(cmd)
-        if envName == 'default':
+        if env_name == 'default':
             pass
 
-    def createDirectoryStructure(self) -> str:
+
+    def createDirectoryStructure(self, app_name, app_version) -> str:
+
         print('Executing createDirectoryStructure()')
         current_user_home = os.path.expanduser('~')
-        app_name = self.Name
-        app_version = self.Version
+        app_name = app_name
+        app_version = app_version
 
         default_directory_struct = 'com/app'
-        final_directory_structure = default_directory_struct + '/'+app_name + '/' + app_version + '/'
-        os.makedirs(final_directory_structure)
+        final_directory_structure = default_directory_struct + '/'+app_name + '/' + app_version + '/'   
+        
+        if not os.path.isdir('com'):
+            os.makedirs(final_directory_structure)
+
         return final_directory_structure
+
 
     ## remember final_directory_path and deployment directory path are same and needs to be passed from the main function
 
-    def transferArtifacts(self, deployment_dir_path):
+    def transferArtifacts(self, artifact_path, dependency_path, deployment_dir_path):
+
         print('Executing transferArtifacts()')
-        cmd_to_copy = "cp -r " + self.artifactPath + " " + deployment_dir_path 
+        cmd_to_copy = "cp -r " + artifact_path + " " + deployment_dir_path 
         os.system(cmd_to_copy)
 
-    def runCommands(self, deployment_dir_path):
+        cmd_to_copy = "cp -r " + dependency_path + " " + deployment_dir_path 
+        os.system(cmd_to_copy)
+
+
+    def runCommands(self, deployment_dir_path, Run_Commands):
+
         print('Executing runCommands()')
         os.chdir(deployment_dir_path)
-        for command in self.Run_Commands.Exec_Commands:
+        print("############ Run_Commands: ", Run_Commands)
+        for command in Run_Commands['Exec_Commands']:
             os.system(command)
 
-    def checkResourceAvailability() -> int:
+
+    def checkResourceAvailability(self) -> int:
+
         print('Executing checkResourceAvailability()')
         MemInfoEntry = namedtuple('MemInfoEntry', ['value', 'unit'])
         meminfo = {}
@@ -59,18 +70,11 @@ class deployer:
         return meminfo['MemAvailable'].value
 
 
+    def pushPubSubToDataXhange(self, app_name, sub_topics, pub_topics):
 
-
-    def fallBack():
-        pass
-
-
-    def pushPubSubToDataXhange():
-        pub_topic = self.Resources.Pubs_Topic
-        subs_topic = self.Resources.Subs_Topic
-
-        ## add code to send to dataXchange
+        permit_object = permission_manager(app_name)
+        permit_object.app_pubsub(sub_list, pub_list)
 
 
 
-    ###  write a function to check continuously if an error has occurent during runtime or deployment 
+
