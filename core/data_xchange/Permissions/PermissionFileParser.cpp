@@ -91,6 +91,7 @@ bool PermissionFileParser::parseData(char *buffer) {
         for(const auto &subTopic: tokens) {
             permissionMapPtr->addSubscriptionPermission(subTopic, applicationId);
         }
+        spdlog::debug("Processed line: {}", line);
         appIdPubSubList.clear();
     }
     return true;

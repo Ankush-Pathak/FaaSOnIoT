@@ -5,7 +5,7 @@
 #include "Subscriber.h"
 #include "spdlog/spdlog.h"
 
-Subscriber::Subscriber(std::shared_ptr<UserApplication> userApplication): userApplicationPtr(userApplication), messenger(userApplication->getId()) {
+Subscriber::Subscriber(std::shared_ptr<UserApplication> userApplication): userApplicationPtr(userApplication), messenger("SUB" + userApplication->getId()) {
 }
 
 void Subscriber::sendMessage(const Message &message) {

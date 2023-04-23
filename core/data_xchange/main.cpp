@@ -29,7 +29,7 @@ int main() {
     std::shared_ptr<std::queue<RequestPtr>> requestQueuePtr = std::make_shared<std::queue<RequestPtr>>();
     std::shared_ptr<std::mutex> requestQueueLockPtr = std::make_shared<std::mutex>();
     std::shared_ptr<PermissionMap> permissionMapPtr = std::make_shared<PermissionMap>();
-    std::shared_ptr<PermissionFileParser> permissionFileParserPtr = std::make_shared<PermissionFileParser>("pub_sub_perm_list", permissionMapPtr);
+    std::shared_ptr<PermissionFileParser> permissionFileParserPtr = std::make_shared<PermissionFileParser>("pub_sub_details", permissionMapPtr);
     TopicSet topicSet;
     Publishers publishers;
     Subscribers subscribers;

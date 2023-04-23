@@ -16,7 +16,7 @@ void PosixMessageQueueWrapper::sendMessage(const std::string &payload) {
     message.set_topic(topic);
     message.set_payload(payload);
     std::string raw_message = message.SerializeAsString();
-    key_t key = ftok(pathname.c_str(), std::hash<std::string>{}(applicationId));
+    key_t key = ftok(pathname.c_str(), std::hash<std::string>{}("PUB" + applicationId));
     if(key == -1) {
         spdlog::error("Could not convert path and identifier to IPC key for uid: {} : {}", applicationId, strerror(errno));
     }
@@ -38,7 +38,7 @@ void PosixMessageQueueWrapper::sendMessage(const std::string &payload) {
 }
 
 std::string PosixMessageQueueWrapper::recvMessage() {
-    key_t key = ftok(pathname.c_str(), std::hash<std::string>{}(applicationId));
+    key_t key = ftok(pathname.c_str(), std::hash<std::string>{}("SUB" + applicationId));
     if(key == -1) {
         spdlog::error("Could not convert path and identifier to IPC key for uid: {} : {}", applicationId, strerror(errno));
     }

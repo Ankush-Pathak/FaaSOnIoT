@@ -5,7 +5,7 @@
 #include "Publisher.h"
 #include "spdlog/spdlog.h"
 
-Publisher::Publisher(UserApplicationPtr &userApplicationPtr) : userApplicationPtr(userApplicationPtr), messenger(userApplicationPtr->getId()) {
+Publisher::Publisher(UserApplicationPtr &userApplicationPtr) : userApplicationPtr(userApplicationPtr), messenger("PUB" + userApplicationPtr->getId()) {
 }
 
 void Publisher::addTopic(TopicPtr &topicPtr) {
