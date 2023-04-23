@@ -1,6 +1,7 @@
 import os
 import json
 import sys
+import uid
 
 from deployer import deployer
 deployer_object = deployer()
@@ -26,6 +27,7 @@ class deployer_main:
             setattr(self, key, value)
 
         self.artifactPath = artifact_path
+        self.uid = uid.uid4()
 
         print("########### NAME", self.Name)
 
@@ -45,9 +47,9 @@ class deployer_main:
             # if resources_avialble_in_kb > self.RequiredResouces:
             #     deployer_object.runCommands(final_dir, self.Run_Commands)
 
-            deployer_object.pushPubSubToDataXhange(self.app_name, self.Resources.Subs_Topic, self.Resources.Pubs_Topic)
+            deployer_object.pushPubSubToDataXhange(self.uid, self.Resources.Subs_Topic, self.Resources.Pubs_Topic)
             
-            deployer_object.runCommands(final_dir, self.Run_Commands)
+            deployer_object.runCommands(self.uid, final_dir, self.Run_Commands)
             
         except Exception as e:
             current_user_home = current_user_home = os.path.expanduser('~')

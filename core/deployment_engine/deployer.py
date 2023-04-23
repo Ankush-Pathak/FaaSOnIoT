@@ -46,13 +46,14 @@ class deployer:
         os.system(cmd_to_copy)
 
 
-    def runCommands(self, deployment_dir_path, Run_Commands):
+    def runCommands(self, app_uid, deployment_dir_path, Run_Commands):
 
         print('Executing runCommands()')
         os.chdir(deployment_dir_path)
         print("############ Run_Commands: ", Run_Commands)
         for command in Run_Commands['Exec_Commands']:
-            os.system(command)
+            prefix_plus_cmd = "APP_ID="+app_uid+" "+command
+            os.system(prefix_plus_cmd)
 
 
     def checkResourceAvailability(self) -> int:
@@ -67,9 +68,9 @@ class deployer:
         return meminfo['MemAvailable'].value
 
 
-    def pushPubSubToDataXhange(self, app_name, sub_topics, pub_topics):
+    def pushPubSubToDataXhange(self, app_id, sub_topics, pub_topics):
 
-        permit_object = permission_manager(app_name)
+        permit_object = permission_manager(app_id)
         permit_object.app_pubsub(sub_list, pub_list)
 
 

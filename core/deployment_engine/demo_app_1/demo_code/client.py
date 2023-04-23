@@ -1,18 +1,20 @@
+import os
 from posix_message_queue_wrapper import PosixMessageQueueWrapper
 
 input_coefficients = ','.join([2,5,3])
 
 path_name = "faas_on_iot"
 
+app_id = os.getenv("APP_ID")
 
 # Initialising Publisher
-mq_pub = PosixMessageQueueWrapper("101", "compute_coefficients", path_name)
+mq_pub = PosixMessageQueueWrapper(app_id, "compute_coefficients", path_name)
 if not mq_pub.registerPublisher('localhost', 8000):
 	print('Could not register Publisher')
 	exit()
 
 # Initialising Subscriber
-mq_sub = PosixMessageQueueWrapper("101", "get_roots", path_name)
+mq_sub = PosixMessageQueueWrapper(app_id, "get_roots", path_name)
 if not mq_sub.registerSubscriber('localhost', 8000):
 	print('Could not register Subscriber')
 	exit()
