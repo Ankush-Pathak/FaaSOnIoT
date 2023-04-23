@@ -1,7 +1,7 @@
 import os
 import json
 import sys
-import uid
+import uuid
 from mutiptocessing import Process
 
 from deployer import deployer
@@ -28,7 +28,7 @@ class deployer_main:
             setattr(self, key, value)
 
         self.artifactPath = artifact_path
-        self.uid = uid.uid4()
+        self.uid = str(uuid.uuid4())
 
         print("########### NAME", self.Name)
 
