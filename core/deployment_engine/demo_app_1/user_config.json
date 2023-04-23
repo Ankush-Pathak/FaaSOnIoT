@@ -10,8 +10,8 @@
   "Run_Containerized": "False",
   "Run_Commands": {
     "Mode": "1",
-    "Exec_Commands": ["pip install -r requirements.txt", "python client.py"],
+    "Exec_Commands": ["pip install -r requirements.txt", "python demo_code/client.py"],
     "Wait_For_Exit": "True"
   },
-  "Dependencies": "/Users/shreyasvaidya/Desktop/ADS/FaaSOnIoT-master/core/deployment_engine/requirements.txt"
+  "Dependencies": "requirements.txt"
 }

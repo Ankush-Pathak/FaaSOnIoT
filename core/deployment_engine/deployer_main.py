@@ -2,6 +2,7 @@ import os
 import json
 import sys
 import uid
+from mutiptocessing import Process
 
 from deployer import deployer
 deployer_object = deployer()
@@ -48,8 +49,12 @@ class deployer_main:
             #     deployer_object.runCommands(final_dir, self.Run_Commands)
 
             deployer_object.pushPubSubToDataXhange(self.uid, self.Resources.Subs_Topic, self.Resources.Pubs_Topic)
+
+            p = Process(target=deployer_object.runCommands, args=(self.uid, final_dir, self.Run_Commands))
+            p.start()
+            p.join()
             
-            deployer_object.runCommands(self.uid, final_dir, self.Run_Commands)
+            #deployer_object.runCommands(self.uid, final_dir, self.Run_Commands)
             
         except Exception as e:
             current_user_home = current_user_home = os.path.expanduser('~')
@@ -66,7 +71,7 @@ class deployer_main:
 
 if __name__== "__main__":
 
-    workspace = os.getenv("WORKSPACE_DIR", "ads_workspace");
+    workspace = os.getenv("WORKSPACE_DIR", "faas_on_iot_workspace");
     os.chdir(workspace)
 
     print('###########################')
