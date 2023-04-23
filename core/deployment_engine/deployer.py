@@ -39,7 +39,7 @@ class deployer:
     def transferArtifacts(self, artifact_path, dependency_path, deployment_dir_path):
 
         print('Executing transferArtifacts()')
-        cmd_to_copy = "cp -r " + artifact_path + " " + deployment_dir_path 
+        cmd_to_copy = "cp -r " + artifact_path + "/* " + deployment_dir_path 
         os.system(cmd_to_copy)
 
         # cmd_to_copy = "cp -r " + dependency_path + " " + deployment_dir_path 
@@ -49,7 +49,7 @@ class deployer:
     def runCommands(self, app_uid, deployment_dir_path, Run_Commands):
 
         print('Executing runCommands()')
-        
+
         os.chdir(deployment_dir_path)
         print("############ Run_Commands: ", Run_Commands)
         for command in Run_Commands['Exec_Commands']:

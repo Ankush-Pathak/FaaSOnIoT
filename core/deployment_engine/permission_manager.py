@@ -1,5 +1,5 @@
 from filelock import FileLock, Timeout
-
+import logging
 
 class permission_manager():
 
@@ -23,19 +23,6 @@ class permission_manager():
                 line=self.app_id+":"
                 f.write(line)
 
-                ## print all elements in the sub_list
-                j=0
-                for i in sub_list:
-                    if j < len(sub_list)-1:
-                        f.write(i) 
-                        f.write(",")
-                        j+=1
-                    else:
-                        f.write(i)
-                    
-                
-                f.write(":")
-
                 ## printing all elements in the pub_list 
                 j=0
                 for i in pub_list:
@@ -46,7 +33,22 @@ class permission_manager():
                     else:
                         f.write(i)
 
+                f.write(":")
+
+                ## print all elements in the sub_list
+                j=0
+                for i in sub_list:
+                    if j < len(sub_list)-1:
+                        f.write(i) 
+                        f.write(",")
+                        j+=1
+                    else:
+                        f.write(i)
+
                 f.write("\n")
+
+        except Exception as e:
+            logging.exception(e)
 
         finally:
             lock.release()

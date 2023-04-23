@@ -1,9 +1,10 @@
 import os
 from posix_message_queue_wrapper import PosixMessageQueueWrapper
+import math
 
 input_coefficients = ','.join([2,5,3])
 
-path_name = "faas_on_iot"
+path_name = os.getenv("IPC_FILE") #"faas_on_iot"
 
 app_id = os.getenv("APP_ID")
 

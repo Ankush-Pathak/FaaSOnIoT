@@ -2,6 +2,7 @@ import os
 import json
 import sys
 import uuid
+import time
 import logging
 from multiprocessing import Process
 
@@ -50,6 +51,7 @@ class deployer_main:
             #     deployer_object.runCommands(final_dir, self.Run_Commands)
 
             deployer_object.pushPubSubToDataXhange(self.uid, self.Resources['Subs_Topic'], self.Resources['Pubs_Topic'])
+            time.sleep(3)
 
             p = Process(target=deployer_object.runCommands, args=(self.uid, final_dir, self.Run_Commands))
             p.start()
