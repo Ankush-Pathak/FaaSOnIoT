@@ -3,7 +3,7 @@ import json
 import sys
 import uuid
 import logging
-from multiptocessing import Process
+from multiprocessing import Process
 
 from deployer import deployer
 deployer_object = deployer()
