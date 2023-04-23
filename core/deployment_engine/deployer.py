@@ -72,7 +72,7 @@ class deployer:
     def pushPubSubToDataXhange(self, app_id, sub_topics, pub_topics):
 
         permit_object = permission_manager(app_id)
-        permit_object.app_pubsub(sub_list, pub_list)
+        permit_object.app_pubsub(sub_topics, pub_topics)
 
 
 
