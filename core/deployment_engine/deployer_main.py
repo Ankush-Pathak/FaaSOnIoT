@@ -2,7 +2,8 @@ import os
 import json
 import sys
 import uuid
-from mutiptocessing import Process
+import logging
+from multiptocessing import Process
 
 from deployer import deployer
 deployer_object = deployer()
@@ -48,7 +49,7 @@ class deployer_main:
             # if resources_avialble_in_kb > self.RequiredResouces:
             #     deployer_object.runCommands(final_dir, self.Run_Commands)
 
-            deployer_object.pushPubSubToDataXhange(self.uid, self.Resources.Subs_Topic, self.Resources.Pubs_Topic)
+            deployer_object.pushPubSubToDataXhange(self.uid, self.Resources['Subs_Topic'], self.Resources['Pubs_Topic'])
 
             p = Process(target=deployer_object.runCommands, args=(self.uid, final_dir, self.Run_Commands))
             p.start()
@@ -58,6 +59,7 @@ class deployer_main:
             
         except Exception as e:
             current_user_home = current_user_home = os.path.expanduser('~')
+            logging.exception(e)
             print(e)
             #cmd = "rm -rf " + current_user_home
 
