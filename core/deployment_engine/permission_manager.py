@@ -8,7 +8,7 @@ class permission_manager():
         self.app_id = app_id
         self.file_name = "pub_sub_details"
 
-    def app_pubsub(sub_list, pub_list):
+    def app_pubsub(self, sub_list, pub_list):
 
         file = self.file_name
 
