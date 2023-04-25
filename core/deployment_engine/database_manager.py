@@ -22,7 +22,7 @@ retry_count = 0
 last_checked_timestamp = datetime.now()
 
 
-class database_main():
+class database_manager():
 
     def process_initial_entries(self) -> None:
 
@@ -50,6 +50,8 @@ class database_main():
             data = deployer(row.name, row.version,row.Environment  , row.requiredPlatform  , row.run_containerized , row.dependecies  
             ,row.subsTopic   , row.Pubs_Topic  ,row.mode   , row.execCommands   ,row.waitForExit  , row.status  , row.deInternalStatus  ,row.process , row.stats)
 
+
+            #################
             self.setup(data)
         
         while True:

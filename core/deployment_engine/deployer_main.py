@@ -9,6 +9,9 @@ from multiprocessing import Process
 from deployer import deployer
 deployer_object = deployer()
 
+from database_manager import database_manager
+db_object = database_manager()
+
 retry_count = 0
 
 config_path = str(sys.argv[1])
@@ -84,6 +87,10 @@ if __name__== "__main__":
 
     #config_path = "/Users/shreyasvaidya/Desktop/ADS/FaaSOnIoT-master/core/deployment_engine/user_config.json"
     #artifact_path = "/Users/shreyasvaidya/Desktop/ADS/FaaSOnIoT-master/core/deployment_engine/demo_code.py"
+
+    # Establish connection with the database
+    db_object.process_initial_entries()
+
 
     deployer_main_object = deployer_main(config_path, artifact_path)
     deployer_main_object.mainLoop()
