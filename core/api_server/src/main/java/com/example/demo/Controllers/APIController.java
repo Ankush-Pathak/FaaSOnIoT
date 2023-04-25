@@ -40,7 +40,7 @@ public class APIController {
 
     static Logger logger = Logger.getLogger(APIController.class.getName());
 
-    @PostMapping("/create")
+    @PostMapping(value = "/create", produces = "application/json")
     public String create(@RequestParam("inputZipFile") MultipartFile inputZipFile) throws IOException {
 
 
@@ -90,7 +90,7 @@ public class APIController {
         return objectMapper.writeValueAsString(applicationDB);
     }
 
-    @GetMapping("/get")
+    @GetMapping(value = "/get", produces = "application/json")
     public String get() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         List<ApplicationDB> applicationDBList = new ArrayList<>();
