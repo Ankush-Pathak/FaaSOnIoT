@@ -1,4 +1,4 @@
-module cli
+module fit
 
 go 1.20
 

@@ -41,5 +41,5 @@ func init() {
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	rootCmd.PersistentFlags().StringVarP(&hostname, "hostname", "d", "localhost", "API server hostname.")
-	rootCmd.PersistentFlags().StringVarP(&port, "port", "p", "8081", "API server port")
+	rootCmd.PersistentFlags().StringVarP(&port, "port", "p", "8082", "API server port")
 }

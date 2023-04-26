@@ -5,6 +5,7 @@ package cmd
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"github.com/spf13/cobra"
 	"io"
@@ -19,7 +20,7 @@ var archivePath string
 func postFile(filename string, targetUrl string) (*http.Response, error) {
 	body := new(bytes.Buffer)
 	writer := multipart.NewWriter(body)
-	part, err := writer.CreateFormFile("file", filepath.Base(filename))
+	part, err := writer.CreateFormFile("inputZipFile", filepath.Base(filename))
 	if err != nil {
 		return nil, err
 	}
@@ -65,10 +66,17 @@ The application configuration must be located in the root of the archive.`,
 			fmt.Printf("Could not process response body: %s\n", err)
 			return
 		}
+
+		jsonResponse := &bytes.Buffer{}
+		err = json.Indent(jsonResponse, responseBody, "", "   ")
+		if err != nil {
+			fmt.Printf("Could not parse response JSON: %s\n", err)
+			return
+		}
 		if response.StatusCode != 200 {
-			fmt.Printf("Server returned error: %s\n", responseBody)
+			fmt.Printf("Server returned error: %s\n", jsonResponse)
 		} else {
-			fmt.Printf("Request successful:\n%s\n", responseBody)
+			fmt.Printf("Request successful:\n%s\n", jsonResponse)
 		}
 
 		if response != nil {
