@@ -9,11 +9,9 @@ from deployer import deployer
 
 
 from sqlalchemy import create_engine, MetaData, Table, select
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 import time
-import database_connection_test
 
 deployer_object = deployer()
 

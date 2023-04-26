@@ -20,9 +20,6 @@ db_object = database_manager()
 
 retry_count = 0
 
-config_path = str(sys.argv[1])
-artifact_path = str(sys.argv[2])
-
 
 class deployer_main:
 
@@ -61,10 +58,9 @@ class deployer_main:
                                                    session, row)
             time.sleep(3)
 
-            deployer_object.runCommands(self.uid, final_dir, self.commands)
+            deployer_object.runCommands(self.uid, final_dir, self.commands, session, row)
 
         except Exception as e:
-            current_user_home = current_user_home = os.path.expanduser('~')
             logging.exception(e)
             print(e)
             # cmd = "rm -rf " + current_user_home
@@ -77,12 +73,11 @@ class deployer_main:
 def setupdDbAndProcessEntries():
     host = 'localhost'
     port = 5432
-    dbname = os.environ.get('DBNAME')
-    username = os.environ.get('DBUSERNAME')
-    password = os.environ.get('PASSWORD')
+    dbname = os.environ.get('DBNAME', 'dbwebapi')
+    username = os.environ.get('DBUSERNAME', 'postgres')
+    password = os.environ.get('PASSWORD', 'postgres')
 
-
-    db_url = 'psotgresql' + '://' + password + ':' + username + '@' + host + ':' + port + '/' + dbname
+    db_url = 'postgresql' + '://' + password + ':' + username + '@' + host + ':' + str(port) + '/' + dbname
 
     engine = create_engine(db_url)
     Base = automap_base()
@@ -90,22 +85,28 @@ def setupdDbAndProcessEntries():
 
     ApplicationsDB = Base.classes.applications
 
-
     session = Session(engine)
 
     config_file = "app.config"
 
     while True:
         try:
-            results = session.query(ApplicationsDB).where(ApplicationsDB.isProcessed == False)
+            results = session.query(ApplicationsDB).where(ApplicationsDB.is_processed == False)
 
             for row in results:
-                config_path = row.extractedPath + "/" + config_file
+                row.status = "PROCESSING"
+                session.commit()
+                config_path = row.extracted_path + "/" + config_file
 
-                artifact_path = row.extractedPath + "/"
-                deployer_main_object = deployer_main(config_path, artifact_path, row, session)
+                artifact_path = row.extracted_path + "/"
+                deployer_main_object = deployer_main(config_path, artifact_path)
 
-                deployer_main_object.mainLoop(row, session)
+                deployer_main_object.mainLoop(session, row)
+
+                row.status = "COMPLETED"
+                row.is_processed = True
+                session.commit()
+
         except Exception as e:
             logging.exception(e)
 
@@ -113,7 +114,10 @@ def setupdDbAndProcessEntries():
 
 
 if __name__ == "__main__":
-    workspace = os.getenv("WORKSPACE_DIR", "faas_on_iot_workspace");
+    home = os.getenv("HOME")
+    workspace = os.getenv("WORKSPACE_DIR", home + "/faas_on_iot_workspace")
+    if not os.path.exists(workspace):
+        os.makedirs(workspace)
     os.chdir(workspace)
 
     print('###########################')

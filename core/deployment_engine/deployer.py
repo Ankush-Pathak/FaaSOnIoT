@@ -1,5 +1,7 @@
+import logging
 import os
 import json
+import subprocess
 from collections import namedtuple
 from multiprocessing import Process
 
@@ -22,21 +24,20 @@ class deployer:
         row.status = status
         session.commit()
 
-    def createDirectoryStructure(self, app_name, app_version, row, session) -> str:
+    def createDirectoryStructure(self, app_name, app_version, session, row) -> str:
 
         print('Executing createDirectoryStructure()')
-        current_user_home = os.path.expanduser('~')
         app_name = app_name
         app_version = app_version
 
         default_directory_struct = 'com/app'
         final_directory_structure = default_directory_struct + '/'+app_name + '/' + app_version + '/'   
         
-        if not os.path.isdir('com'):
+        if not os.path.exists(final_directory_structure):
             os.makedirs(final_directory_structure)
 
         status = "directory structure created".upper()
-        row.status = status
+        row.deployment_engine_reported_status = status
         session.commit()
 
         return final_directory_structure
@@ -54,30 +55,32 @@ class deployer:
         # os.system(cmd_to_copy)
 
         status = "artifacts transferred".upper()
-        row.status = status
+        row.deployment_engine_reported_status = status
         session.commit()
 
     def runCommands(self, app_uid, deployment_dir_path, commands, session, row):
 
         print('Executing runCommands()')
 
-        os.chdir(deployment_dir_path)
         print("############ Run_Commands: ", commands)
         for command in commands:
-            p = Process(target=self.runCommand, args=(app_uid, command))
+            p = Process(target=self.runCommand, args=(app_uid, command, deployment_dir_path))
             p.daemon = "True".lower() != command["waitForExit"].lower()
             p.start()
             if not p.daemon:
                 p.join()
 
         status = "commands executed".upper()
-        row.status = status
+        row.deployment_engine_reported_status = status
         session.commit()
 
-    def runCommand(self, app_uid, command):
-        for invocation in command['execCommands']:
-            prefix_plus_cmd = "APP_ID=" + app_uid + " " + invocation + " &> app.log"
-            os.system(prefix_plus_cmd)
+    def runCommand(self, app_uid, command, deployment_dir_path):
+        os.chdir(deployment_dir_path)
+
+        for i, invocation in enumerate(command['execCommands']):
+            prefix_plus_cmd = "APP_ID=" + app_uid + " " + invocation
+            with open("app_" + str(i) + ".log", 'a') as logfile:
+                subprocess.run(prefix_plus_cmd, shell=True, stdout=logfile, stderr=logfile)
 
     def checkResourceAvailability(self, session, row) -> int:
 
@@ -98,7 +101,7 @@ class deployer:
         permit_object.app_pubsub(sub_topics, pub_topics)
 
         status = "pushed pub sub info to data xchange".upper()
-        row.status = status
+        row.deployment_engine_reported_status = status
         session.commit()
 
 
