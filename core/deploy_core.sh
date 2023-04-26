@@ -56,6 +56,7 @@ function start_data_xchange() {
     printf $pre_guards
     echo "Starting Data XChange"
     cd $workspace_dir
+    touch faas_on_iot
     $binaries_dir/data_xchange &> data_xchange.log &
     cd $default_dir
     echo "Done"
@@ -85,7 +86,7 @@ function start_database() {
     printf $pre_guards
     echo "Starting database"
     cd api_server
-    if [ -d "$workspace_dir/postgres_data" ]; then
+    if [ ! -d "$workspace_dir/postgres_data" ]; then
         mkdir -p $workspace_dir/postgres_data
         docker-compose down
     fi

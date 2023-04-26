@@ -14,6 +14,7 @@ const int Messenger::DEFAULT_MSG_TYPE = 1;
 const int Messenger::MAX_MSG_LEN = 1024;
 
 Messenger::Messenger(std::string uid) {
+   spdlog::info("Creating messenger for {}", uid);
    key_t key = ftok(pathname.c_str(), std::hash<std::string>{}(uid));
    if(key == -1) {
        spdlog::error("Could not convert path and identifier to IPC key for uid: {} : {}", uid, strerror(errno));
