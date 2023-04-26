@@ -104,7 +104,7 @@ public class APIController {
 
     private ApplicationDB persistToDatabase(Application application, String extractedPath) {
        for(ApplicationDB applicationDB: applicationRepository.findAll()) {
-            if(Objects.equals(applicationDB.getName(), applicationDB.getName())) {
+            if(Objects.equals(applicationDB.getName(), application.getName())) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Application with name: " + applicationDB.getName() + " exists");
             }
        }
