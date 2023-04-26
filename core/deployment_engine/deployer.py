@@ -1,6 +1,7 @@
 import os
 import json
 from collections import namedtuple
+from multiprocessing import Process
 
 from permission_manager import permission_manager
 
@@ -34,7 +35,7 @@ class deployer:
         if not os.path.isdir('com'):
             os.makedirs(final_directory_structure)
 
-        status = "directory structure created"
+        status = "directory structure created".upper()
         row.status = status
         session.commit()
 
@@ -52,24 +53,31 @@ class deployer:
         # cmd_to_copy = "cp -r " + dependency_path + " " + deployment_dir_path 
         # os.system(cmd_to_copy)
 
-        status = "artifcat transffered"
+        status = "artifacts transferred".upper()
         row.status = status
         session.commit()
 
-    def runCommands(self, app_uid, deployment_dir_path, Run_Commands, session, row):
+    def runCommands(self, app_uid, deployment_dir_path, commands, session, row):
 
         print('Executing runCommands()')
 
         os.chdir(deployment_dir_path)
-        print("############ Run_Commands: ", Run_Commands)
-        for command in Run_Commands['Exec_Commands']:
-            prefix_plus_cmd = "APP_ID="+app_uid+" "+command
-            os.system(prefix_plus_cmd)
+        print("############ Run_Commands: ", commands)
+        for command in commands:
+            p = Process(target=self.runCommand, args=(app_uid, command))
+            p.daemon = "True".lower() != command["waitForExit"].lower()
+            p.start()
+            if not p.daemon:
+                p.join()
 
-        status = "commands executed"
+        status = "commands executed".upper()
         row.status = status
         session.commit()
 
+    def runCommand(self, app_uid, command):
+        for invocation in command['execCommands']:
+            prefix_plus_cmd = "APP_ID=" + app_uid + " " + invocation + " &> app.log"
+            os.system(prefix_plus_cmd)
 
     def checkResourceAvailability(self, session, row) -> int:
 
@@ -89,7 +97,7 @@ class deployer:
         permit_object = permission_manager(app_id)
         permit_object.app_pubsub(sub_topics, pub_topics)
 
-        status = "pushed pub sub info"
+        status = "pushed pub sub info to data xchange".upper()
         row.status = status
         session.commit()
 
