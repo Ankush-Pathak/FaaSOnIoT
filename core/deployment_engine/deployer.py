@@ -7,7 +7,7 @@ from permission_manager import permission_manager
 
 class deployer:
     
-    def createRunTimeEnv(self, env_name, final_dir):
+    def createRunTimeEnv(self, env_name, final_dir, session, row):
 
         print('Executing createRunTimeEnv()')
         os.chdir(final_dir)
@@ -16,9 +16,12 @@ class deployer:
             os.system(cmd)
         if env_name == 'default':
             pass
+        
+        status = "runtime env created"
+        row.status = status
+        session.commit()
 
-
-    def createDirectoryStructure(self, app_name, app_version) -> str:
+    def createDirectoryStructure(self, app_name, app_version, row, session) -> str:
 
         print('Executing createDirectoryStructure()')
         current_user_home = os.path.expanduser('~')
@@ -31,12 +34,16 @@ class deployer:
         if not os.path.isdir('com'):
             os.makedirs(final_directory_structure)
 
+        status = "directory structure created"
+        row.status = status
+        session.commit()
+
         return final_directory_structure
 
 
     ## remember final_directory_path and deployment directory path are same and needs to be passed from the main function
 
-    def transferArtifacts(self, artifact_path, dependency_path, deployment_dir_path):
+    def transferArtifacts(self, artifact_path, dependency_path, deployment_dir_path, session, row):
 
         print('Executing transferArtifacts()')
         cmd_to_copy = "cp -r " + artifact_path + "/* " + deployment_dir_path 
@@ -45,8 +52,11 @@ class deployer:
         # cmd_to_copy = "cp -r " + dependency_path + " " + deployment_dir_path 
         # os.system(cmd_to_copy)
 
+        status = "artifcat transffered"
+        row.status = status
+        session.commit()
 
-    def runCommands(self, app_uid, deployment_dir_path, Run_Commands):
+    def runCommands(self, app_uid, deployment_dir_path, Run_Commands, session, row):
 
         print('Executing runCommands()')
 
@@ -56,8 +66,12 @@ class deployer:
             prefix_plus_cmd = "APP_ID="+app_uid+" "+command
             os.system(prefix_plus_cmd)
 
+        status = "commands executed"
+        row.status = status
+        session.commit()
 
-    def checkResourceAvailability(self) -> int:
+
+    def checkResourceAvailability(self, session, row) -> int:
 
         print('Executing checkResourceAvailability()')
         MemInfoEntry = namedtuple('MemInfoEntry', ['value', 'unit'])
@@ -69,10 +83,15 @@ class deployer:
         return meminfo['MemAvailable'].value
 
 
-    def pushPubSubToDataXhange(self, app_id, sub_topics, pub_topics):
+
+    def pushPubSubToDataXhange(self, app_id, sub_topics, pub_topics, session, row):
 
         permit_object = permission_manager(app_id)
         permit_object.app_pubsub(sub_topics, pub_topics)
+
+        status = "pushed pub sub info"
+        row.status = status
+        session.commit()
 
 
 

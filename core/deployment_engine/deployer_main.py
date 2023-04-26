@@ -5,6 +5,12 @@ import uuid
 import time
 import logging
 from multiprocessing import Process
+from sqlalchemy import create_engine
+from sqlalchemy.ext.automap import automap_base
+
+from sqlalchemy.orm import  Session
+
+
 
 from deployer import deployer
 deployer_object = deployer()
@@ -38,22 +44,22 @@ class deployer_main:
         print("########### NAME", self.Name)
 
 
-    def mainLoop(self):
+    def mainLoop(self,session, row):
 
         try:
             print('Starting Deployment Process')
             global retry_count
             retry_count += 1
             
-            final_dir = deployer_object.createDirectoryStructure(self.Name, self.Version)
+            final_dir = deployer_object.createDirectoryStructure(self.Name, self.Version, session, row)
             #deployer_object. createRunTimeEnv(self.Runtime_Environment, final_dir)
-            deployer_object.transferArtifacts(self.artifactPath, self.Dependencies, final_dir)
+            deployer_object.transferArtifacts(self.artifactPath, self.Dependencies, final_dir, session, row)
             
             # resources_avialble_in_kb = deployer_object.checkResourceAvailability()
             # if resources_avialble_in_kb > self.RequiredResouces:
             #     deployer_object.runCommands(final_dir, self.Run_Commands)
 
-            deployer_object.pushPubSubToDataXhange(self.uid, self.Resources['Subs_Topic'], self.Resources['Pubs_Topic'])
+            deployer_object.pushPubSubToDataXhange(self.uid, self.Resources['Subs_Topic'], self.Resources['Pubs_Topic'],session, row)
             time.sleep(3)
 
             p = Process(target=deployer_object.runCommands, args=(self.uid, final_dir, self.Run_Commands))
@@ -73,8 +79,46 @@ class deployer_main:
                 self.mainLoop()
 
 
+def setupdDbAndProcessEntries():
+    host = 'localhost'
+    port = 5432
+    dbname = os.environ.get('DBNAME')
+    username = os.environ.get('DBUSERNAME')
+    password = os.environ.get('PASSWORD')
 
-            
+    db_url = 'postgresql://postgres:postgres@10.21.233.168:5432/dbwebapi'
+
+
+    db_url = 'psotgresql' + '://' + password  + ':' + username + '@' + host + ':' + port + '/' + dbname
+
+    engine = create_engine(db_url)
+    Base = automap_base()
+    Base.prepare(engine, reflect = True)
+
+    ApplicationsDb = Base.classes.applications
+
+    session = Session(engine)
+
+
+    session = Session(engine)
+
+    app_name = "app.json"
+
+    while True:
+        try:
+            results = session.query(ApplicationsDb).where(ApplicationsDb.c.isProcessed == False)
+
+            for row in results:
+                config_path = row.extractedPath + "/" + app_name
+
+                artifact_path = row.extractedPath + "/"
+                deployer_main_object = deployer_main(config_path, artifact_path,row, session)
+                
+        except Exception:
+            deployer_main_object.mainLoop(row, session)
+            pass
+
+        time.sleep(2)
 
 if __name__== "__main__":
 
@@ -88,11 +132,16 @@ if __name__== "__main__":
     #config_path = "/Users/shreyasvaidya/Desktop/ADS/FaaSOnIoT-master/core/deployment_engine/user_config.json"
     #artifact_path = "/Users/shreyasvaidya/Desktop/ADS/FaaSOnIoT-master/core/deployment_engine/demo_code.py"
 
-    # Establish connection with the database
-    db_object.process_initial_entries()
+    setupdDbAndProcessEntries()
 
 
-    deployer_main_object = deployer_main(config_path, artifact_path)
-    deployer_main_object.mainLoop()
+
+
+
+
+
+
+
+    
 
 
