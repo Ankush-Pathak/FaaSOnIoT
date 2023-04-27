@@ -23,4 +23,6 @@ tar -xvf apache-maven-3.9.1-bin.tar.gz
 `bash build_core.sh # Inside core directory`
 
 # Start all components
-`bash deploy_core.sh # Inside core directory`
+`bash deploy_core.sh # Inside core directory`  
+
+- UI should be accessible on port 3000 and API Server on 8082

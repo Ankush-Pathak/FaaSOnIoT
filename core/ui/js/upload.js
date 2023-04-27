@@ -74,7 +74,10 @@ function showHistory(id) {
 function updateStatus(status) {
 	console.log(status)
 	var header = document.getElementById('newAppName');
-	header.innerText = newApp;
+	header.innerText = "Deploying: " + newApp;
+	if(status.toUpperCase() === "Commands Executed".toUpperCase()) {
+		header.innerText = "Latest deployed: " + newApp;
+	}
 	const statusValues = ["Directory Structure Created", "Artifacts Transferred", "Pushed Pub Sub Info To Data XChange", "Commands Executed"]
 	var tr = document.createElement("tr");
 	var isGreen = true;
