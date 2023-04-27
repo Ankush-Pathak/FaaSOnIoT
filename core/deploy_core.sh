@@ -101,8 +101,7 @@ function start_ui() {
     echo "Starting UI"
     cd ui
     npm install
-    cd $workspace_dir
-    node $default_dir/app.js &> ui.log &
+    node app.js &> $workspace_dir/ui.log &
     cd $default_dir
     echo "Done"
     printf $post_guards
