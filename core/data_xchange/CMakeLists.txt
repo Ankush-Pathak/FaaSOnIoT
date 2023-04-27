@@ -9,7 +9,8 @@ set(Boost_INCLUDE_DIR Thirdparty/boost_1_80_0/)
 set(BOOST_INCLUDE_LIBRARIES thread filesystem system program_options)
 set(BOOST_ENABLE_CMAKE ON)
 Set(FETCHCONTENT_QUIET FALSE)
-
+execute_process(COMMAND protoc -Imessages --cpp_out=messages/ messages/pub_sub_messages.proto
+                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
 #include(FetchContent)
 #FetchContent_Declare(
 #        Boost

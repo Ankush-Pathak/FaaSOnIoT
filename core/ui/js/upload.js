@@ -1,7 +1,7 @@
 const uploadForm = document.getElementById('upload-form');
 const createResponseDiv = document.getElementById('createResponse');
 const getResponseDiv = document.getElementById('getResponse');
-const baseURL = "http://localhost:8082";
+const baseURL = "http://" + location.hostname + ":8082";
 var newApp = "";
 
 uploadForm.addEventListener('submit', (event) => {

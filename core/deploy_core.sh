@@ -14,7 +14,7 @@ function ctrl_c() {
     printf $pre_guards
     echo "Killing all services"
     cd $default_dir/api_server
-    docker-compose stop
+    sudo docker-compose stop
     pkill -P $$
     kill `ps  | grep python | awk '{ print $1 }'`
     echo "Bye bye"
@@ -88,9 +88,9 @@ function start_database() {
     cd api_server
     if [ ! -d "$workspace_dir/postgres_data" ]; then
         mkdir -p $workspace_dir/postgres_data
-        docker-compose down
+        sudo docker-compose down
     fi
-    docker-compose up -d
+    sudo docker-compose up -d
     cd $default_dir
     echo "Done"
     printf $post_guards
