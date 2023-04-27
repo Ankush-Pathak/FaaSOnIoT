@@ -14,6 +14,7 @@ import net.lingala.zip4j.exception.ZipException;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,6 +41,7 @@ public class APIController {
 
     static Logger logger = Logger.getLogger(APIController.class.getName());
 
+    @CrossOrigin 
     @PostMapping(value = "/create", produces = "application/json")
     public String create(@RequestParam("inputZipFile") MultipartFile inputZipFile) throws IOException {
 
@@ -90,6 +92,7 @@ public class APIController {
         return objectMapper.writeValueAsString(applicationDB);
     }
 
+    @CrossOrigin
     @GetMapping(value = "/get", produces = "application/json")
     public String get() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();

@@ -14,7 +14,7 @@ var port string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "cli",
+	Use:   "fit",
 	Short: "CLI tool to deploy applications on the FaasOnIoT platform",
 	Long:  `CLI tool....`,
 	// Uncomment the following line if your bare application
