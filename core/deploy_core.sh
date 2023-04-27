@@ -96,6 +96,18 @@ function start_database() {
     printf $post_guards
 }
 
+function start_ui() {
+    printf $pre_guards
+    echo "Starting UI"
+    cd ui
+    npm install
+    cd $workspace_dir
+    node $default_dir/app.js &> ui.log &
+    cd $default_dir
+    echo "Done"
+    printf $post_guards
+}
+
 
 
 
@@ -108,6 +120,7 @@ start_api_server
 sleep 5
 start_data_xchange
 start_deployment_engine
+start_ui
 
 echo "Ctrl+C to stop"
 for job in `jobs -p`

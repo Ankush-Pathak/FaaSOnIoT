@@ -45,10 +45,13 @@ class deployer_main:
             print('Starting Deployment Process')
             global retry_count
             retry_count += 1
-
+            
+            time.sleep(2)
             final_dir = deployer_object.createDirectoryStructure(self.name, self.version, session, row)
+            time.sleep(3)
             # deployer_object. createRunTimeEnv(self.Runtime_Environment, final_dir)
             deployer_object.transferArtifacts(self.artifactPath, self.dependencies, final_dir, session, row)
+            time.sleep(3)
 
             # resources_avialble_in_kb = deployer_object.checkResourceAvailability()
             # if resources_avialble_in_kb > self.RequiredResouces:
