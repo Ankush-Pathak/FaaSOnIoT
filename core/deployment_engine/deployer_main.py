@@ -84,7 +84,7 @@ def setupdDbAndProcessEntries():
 
     engine = create_engine(db_url)
     Base = automap_base()
-    Base.prepare(engine, reflect=True)
+    Base.prepare(autoload_with=engine, reflect=True)
 
     ApplicationsDB = Base.classes.applications
 
