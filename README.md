@@ -4,7 +4,7 @@
 
 <img src="docs/faas_iot_block_diagram.drawio.png" />
 
-See the YouTube-hosted [demo video](https://youtu.be/LImHNfsawUk).  
+See the YouTube-hosted [demo video](https://youtu.be/Ej96K4zVxss).  
 Technical report located [here](docs/report.pdf).
 
 ## Code merging etiquette(TODO: Move to an appropriate location in docs/)
